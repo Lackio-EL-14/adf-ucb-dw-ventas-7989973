@@ -247,6 +247,7 @@
 				"     input(",
 				"          ID as string,",
 				"          CAT as string,",
+				"          SUBCAT as string,",
 				"          MAINTENANCE as string",
 				"     ),",
 				"     deletable:false,",

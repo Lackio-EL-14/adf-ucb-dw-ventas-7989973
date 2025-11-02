@@ -1,0 +1,323 @@
+{
+	"name": "dataflow_silver",
+	"properties": {
+		"folder": {
+			"name": "Silver"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_tabla_clientes",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_tabla_clientes_location",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_tabla_clientes_BD",
+						"type": "DatasetReference"
+					},
+					"name": "source3"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_tabla_productos",
+						"type": "DatasetReference"
+					},
+					"name": "source4"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_tabla_detalle_ventas",
+						"type": "DatasetReference"
+					},
+					"name": "source6"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_tabla_productos_CAT",
+						"type": "DatasetReference"
+					},
+					"name": "source5"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_clientes_silver",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_productos_silver",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_detalle_ventas_silver",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "derivedColumn4"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "join2"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "derivedColumn5"
+				},
+				{
+					"name": "derivedColumn7"
+				},
+				{
+					"name": "filter2"
+				},
+				{
+					"name": "derivedColumn8"
+				},
+				{
+					"name": "derivedColumn9"
+				},
+				{
+					"name": "filter3"
+				},
+				{
+					"name": "join3"
+				},
+				{
+					"name": "select2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CST_ID as string,",
+				"          CST_KEY as string,",
+				"          CST_FIRSTNAME as string,",
+				"          CST_LASTNAME as string,",
+				"          CST_MARITAL_STATUS as string,",
+				"          CST_GNRD as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          CID as string,",
+				"          CNTRY as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source(output(",
+				"          CID as string,",
+				"          BDATE as string,",
+				"          GEN as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source3",
+				"source(output(",
+				"          PRD_ID as string,",
+				"          PRD_KEY as string,",
+				"          PRD_NM as string,",
+				"          PRD_COST as string,",
+				"          PRD_LINE as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source4",
+				"source(output(",
+				"          SLS_ORD_NUM as string,",
+				"          SLS_PRD_KEY as string,",
+				"          SLS_CUST_ID as string,",
+				"          SLS_ORDER_DT as string,",
+				"          SLS_SHIP_DT as string,",
+				"          SLS_SALES as string,",
+				"          SLS_QUANTITY as string,",
+				"          SLS_PRICE as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source6",
+				"source(output(",
+				"          ID as string,",
+				"          CAT as string,",
+				"          SUBCAT as string,",
+				"          MAINTENANCE as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source5",
+				"source1 derive(CST_ID = toInteger(CST_ID),",
+				"          CST_FIRSTNAME = trim(CST_FIRSTNAME),",
+				"          CST_LASTNAME = trim(CST_LASTNAME),",
+				"          CST_MARITAL_STATUS = iif(CST_MARITAL_STATUS == 'M', 'Married', 'Single'),",
+				"          CST_GNRD = iif(CST_GNRD == 'M', 'Male', 'Female')) ~> derivedColumn1",
+				"source2 derive(CID = replace(CID, '-', ''),",
+				"          CNTRY = trim(CNTRY)) ~> derivedColumn2",
+				"source3 derive(CID = replace(CID, 'NAS', ''),",
+				"          GEN = trim(GEN),",
+				"          BDATE = toDate(BDATE, 'yyyy-MM-dd')) ~> derivedColumn3",
+				"derivedColumn3 filter(!isNull(GEN) && GEN != '') ~> filter1",
+				"filter1 derive(GEN = iif(GEN == 'M', 'Male', iif(GEN == 'F', 'Female', GEN))) ~> derivedColumn4",
+				"derivedColumn1, derivedColumn2 join(CST_KEY == CID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1, derivedColumn4 join(CST_KEY == derivedColumn3@CID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join2",
+				"join2 select(mapColumn(",
+				"          CST_ID,",
+				"          CST_KEY,",
+				"          CST_FIRSTNAME,",
+				"          CST_LASTNAME,",
+				"          CST_MARITAL_STATUS,",
+				"          CST_GNRD,",
+				"          CNTRY,",
+				"          BDATE",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"source4 derive(PRD_NM = trim(PRD_NM),",
+				"          PRD_LINE = trim(PRD_LINE),",
+				"          PRD_KEYS = substring(PRD_KEY, 0, 2),",
+				"          PRD_ID = toInteger(PRD_ID)) ~> derivedColumn5",
+				"source6 derive(SLS_CUST_ID = toInteger(SLS_CUST_ID),",
+				"          SLS_ORDER_DT = toDate(SLS_ORDER_DT, 'yyyyMMdd'),",
+				"          SLS_SHIP_DT = toDate(SLS_SHIP_DT, 'yyyyMMdd'),",
+				"          SLS_SALES = toInteger(SLS_SALES),",
+				"          SLS_QUANTITY = toInteger(SLS_QUANTITY),",
+				"          SLS_PRICE = toInteger(SLS_PRICE)) ~> derivedColumn7",
+				"derivedColumn5 filter(!isNull(PRD_COST) && PRD_COST != '') ~> filter2",
+				"filter2 derive(PRD_COST = toInteger(PRD_COST)) ~> derivedColumn8",
+				"source5 derive(ID = trim(ID),",
+				"          CAT = trim(CAT),",
+				"          SUBCAT = trim(SUBCAT),",
+				"          MAINTENANCE = upper(trim(MAINTENANCE)),",
+				"          ID_KEY = substring(ID, 0, 2)) ~> derivedColumn9",
+				"derivedColumn8 filter(!isNull(PRD_LINE) && PRD_LINE != '') ~> filter3",
+				"filter3, derivedColumn9 join(PRD_KEYS == ID_KEY,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join3",
+				"join3 select(mapColumn(",
+				"          PRD_ID,",
+				"          PRD_KEYS,",
+				"          PRD_NM,",
+				"          PRD_COST,",
+				"          PRD_LINE,",
+				"          CAT,",
+				"          SUBCAT,",
+				"          MAINTENANCE",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CST_ID as integer,",
+				"          CST_KEY as string,",
+				"          CST_FIRSTNAME as string,",
+				"          CST_LASTNAME as string,",
+				"          CST_MARITAL_STATUS as string,",
+				"          CST_GNRD as string,",
+				"          CNTRY as string,",
+				"          BDATE as date,",
+				"          GEN as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          PRD_ID as integer,",
+				"          PRD_KEY as string,",
+				"          PRD_NM as string,",
+				"          PRD_COST as string,",
+				"          PRD_LINE as string,",
+				"          CAT as string,",
+				"          MAINTENANCE as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2",
+				"derivedColumn7 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SLS_ORD_NUM as string,",
+				"          SLS_PRD_KEY as string,",
+				"          SLS_CUST_ID as string,",
+				"          SLS_ORDER_DT as string,",
+				"          SLS_SHIP_DT as string,",
+				"          SLS_SALES as integer,",
+				"          SLS_QUANTITY as integer,",
+				"          SLS_PRICE as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink3"
+			]
+		}
+	}
+}

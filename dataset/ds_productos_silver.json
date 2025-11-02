@@ -1,26 +1,39 @@
 {
-	"name": "ds_tabla_productos_CAT",
+	"name": "ds_productos_silver",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sql_ventas",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Bronze"
+			"name": "Silver"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "ID",
+				"name": "PRD_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PRD_KEY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRD_NM",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRD_COST",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PRD_LINE",
 				"type": "nvarchar"
 			},
 			{
 				"name": "CAT",
-				"type": "nvarchar"
-			},
-			{
-				"name": "SUBCAT",
 				"type": "nvarchar"
 			},
 			{
@@ -29,8 +42,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "BRONZE",
-			"table": "PRODUCTOS_CAT_MANT"
+			"schema": "SILVER",
+			"table": "PRODUCTOS"
 		}
 	}
 }
