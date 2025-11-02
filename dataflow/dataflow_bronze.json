@@ -260,6 +260,7 @@
 				"     mapColumn(",
 				"          ID,",
 				"          CAT,",
+				"          SUBCAT,",
 				"          MAINTENANCE",
 				"     )) ~> sink5",
 				"source6 sink(allowSchemaDrift: true,",
