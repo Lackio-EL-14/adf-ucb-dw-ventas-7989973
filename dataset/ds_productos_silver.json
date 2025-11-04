@@ -50,5 +50,6 @@
 			"schema": "SILVER",
 			"table": "PRODUCTOS"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

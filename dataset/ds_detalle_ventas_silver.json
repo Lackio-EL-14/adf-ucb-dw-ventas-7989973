@@ -52,5 +52,6 @@
 			"schema": "SILVER",
 			"table": "DETALLE_VENTA"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

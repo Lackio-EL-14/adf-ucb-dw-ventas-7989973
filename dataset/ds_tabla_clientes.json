@@ -40,5 +40,6 @@
 			"schema": "BRONZE",
 			"table": "CLIENTES"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }
