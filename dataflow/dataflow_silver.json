@@ -281,7 +281,7 @@
 				"     validateSchema: false,",
 				"     input(",
 				"          PRD_ID as integer,",
-				"          PRD_KEY as string,",
+				"          PRD_KEYS as string,",
 				"          PRD_NM as string,",
 				"          PRD_COST as integer,",
 				"          PRD_LINE as string,",

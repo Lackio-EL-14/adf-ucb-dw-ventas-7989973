@@ -1,55 +1,49 @@
 {
-	"name": "ds_productos_silver",
+	"name": "ds_dim_clientes",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sql_ventas",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Silver"
+			"name": "Gold"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
 			{
-				"name": "PRD_ID",
+				"name": "CST_ID",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "PRD_KEYS",
+				"name": "CST_KEY",
 				"type": "nvarchar"
 			},
 			{
-				"name": "PRD_NM",
+				"name": "CST_LASTNAME",
 				"type": "nvarchar"
 			},
 			{
-				"name": "PRD_COST",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "PRD_LINE",
+				"name": "CST_MARITAL_STATUS",
 				"type": "nvarchar"
 			},
 			{
-				"name": "CAT",
+				"name": "CST_GNRD",
 				"type": "nvarchar"
 			},
 			{
-				"name": "SUBCAT",
+				"name": "CNTRY",
 				"type": "nvarchar"
 			},
 			{
-				"name": "MAINTENANCE",
-				"type": "nvarchar"
+				"name": "BDATE",
+				"type": "date"
 			}
 		],
 		"typeProperties": {
-			"schema": "SILVER",
-			"table": "PRODUCTOS"
+			"schema": "GOLD",
+			"table": "DIM_CLIENTES"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

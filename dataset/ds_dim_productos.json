@@ -1,21 +1,16 @@
 {
-	"name": "ds_productos_silver",
+	"name": "ds_dim_productos",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sql_ventas",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "Silver"
+			"name": "Gold"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
-			{
-				"name": "PRD_ID",
-				"type": "int",
-				"precision": 10
-			},
 			{
 				"name": "PRD_KEYS",
 				"type": "nvarchar"
@@ -47,9 +42,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "SILVER",
-			"table": "PRODUCTOS"
+			"schema": "GOLD",
+			"table": "DIM_PRODUCTOS"
 		}
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }
