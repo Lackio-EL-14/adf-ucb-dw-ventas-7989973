@@ -34,7 +34,7 @@
 			},
 			{
 				"name": "CST_GNRD",
-				"type": "varchar"
+				"type": "nvarchar"
 			},
 			{
 				"name": "CNTRY",
@@ -43,10 +43,6 @@
 			{
 				"name": "BDATE",
 				"type": "date"
-			},
-			{
-				"name": "GEN",
-				"type": "nvarchar"
 			}
 		],
 		"typeProperties": {

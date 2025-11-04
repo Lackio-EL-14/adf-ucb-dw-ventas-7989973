@@ -26,7 +26,8 @@
 			},
 			{
 				"name": "PRD_COST",
-				"type": "nvarchar"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "PRD_LINE",
@@ -34,6 +35,10 @@
 			},
 			{
 				"name": "CAT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "SUBCAT",
 				"type": "nvarchar"
 			},
 			{
