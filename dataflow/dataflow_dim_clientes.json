@@ -1,0 +1,86 @@
+{
+	"name": "dataflow_dim_clientes",
+	"properties": {
+		"folder": {
+			"name": "Gold"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_clientes_silver",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_dim_clientes",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CST_ID as string,",
+				"          CST_KEY as string,",
+				"          CST_FIRSTNAME as string,",
+				"          CST_LASTNAME as string,",
+				"          CST_MARITAL_STATUS as string,",
+				"          CST_GNRD as string,",
+				"          CNTRY as string,",
+				"          BDATE as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 aggregate(groupBy(CST_ID),",
+				"     CST_KEY = first(CST_KEY),",
+				"          CST_FIRSTNAME = first(CST_FIRSTNAME),",
+				"          CST_LASTNAME = first(CST_LASTNAME),",
+				"          CST_MARITAL_STATUS = first(CST_MARITAL_STATUS),",
+				"          CST_GNRD = first(CST_GNRD),",
+				"          CNTRY = first(CNTRY),",
+				"          BDATE = first(BDATE)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CST_ID as string,",
+				"          CST_FIRSTNAME as string,",
+				"          CST_LASTNAME as string,",
+				"          CST_MARITAL_STATUS as string,",
+				"          CST_GNRD as string,",
+				"          CNTRY as string,",
+				"          BDATE as date",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          CST_ID,",
+				"          CST_FIRSTNAME,",
+				"          CST_LASTNAME,",
+				"          CST_MARITAL_STATUS,",
+				"          CST_GNRD,",
+				"          CNTRY,",
+				"          BDATE",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

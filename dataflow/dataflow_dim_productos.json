@@ -1,0 +1,84 @@
+{
+	"name": "dataflow_dim_productos",
+	"properties": {
+		"folder": {
+			"name": "Gold"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_productos_silver",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_dim_productos",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          PRD_ID as string,",
+				"          PRD_KEY as string,",
+				"          PRD_NM as string,",
+				"          PRD_COST as integer,",
+				"          PRD_LINE as string,",
+				"          CAT as string,",
+				"          SUBCAT as string,",
+				"          MAINTENANCE as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source1 aggregate(groupBy(PRD_ID),",
+				"     PRD_KEY = first(PRD_KEY) ,",
+				"          PRD_NM = first(PRD_NM) ,",
+				"          PRD_COST = first(PRD_COST) ,",
+				"          PRD_LINE = first(PRD_LINE) ,",
+				"          CAT = first(CAT) ,",
+				"          SUBCAT = first(SUBCAT) ,",
+				"          MAINTENANCE = first(MAINTENANCE) ) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          PRD_KEY as string,",
+				"          PRD_NM as string,",
+				"          PRD_COST as integer,",
+				"          PRD_LINE as string,",
+				"          CAT as string,",
+				"          MAINTENANCE as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          PRD_KEY,",
+				"          PRD_NM,",
+				"          PRD_COST,",
+				"          PRD_LINE,",
+				"          CAT,",
+				"          MAINTENANCE",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}

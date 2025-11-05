@@ -13,11 +13,10 @@
 		"schema": [
 			{
 				"name": "PRD_ID",
-				"type": "int",
-				"precision": 10
+				"type": "nvarchar"
 			},
 			{
-				"name": "PRD_KEYS",
+				"name": "PRD_KEY",
 				"type": "nvarchar"
 			},
 			{

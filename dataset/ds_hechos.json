@@ -26,16 +26,17 @@
 			},
 			{
 				"name": "SLS_CUST_ID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ID_ORDER_DT",
 				"type": "int",
 				"precision": 10
 			},
 			{
-				"name": "ID_ORDER_DT",
-				"type": "date"
-			},
-			{
 				"name": "ID_SHIP_DT",
-				"type": "date"
+				"type": "int",
+				"precision": 10
 			},
 			{
 				"name": "SLS_SALES",

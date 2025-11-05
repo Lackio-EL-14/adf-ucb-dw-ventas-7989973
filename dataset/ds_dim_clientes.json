@@ -13,11 +13,10 @@
 		"schema": [
 			{
 				"name": "CST_ID",
-				"type": "int",
-				"precision": 10
+				"type": "nvarchar"
 			},
 			{
-				"name": "CST_KEY",
+				"name": "CST_FIRSTNAME",
 				"type": "nvarchar"
 			},
 			{

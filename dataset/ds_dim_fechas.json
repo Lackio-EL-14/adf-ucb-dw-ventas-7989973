@@ -18,7 +18,7 @@
 			},
 			{
 				"name": "FECHA",
-				"type": "nvarchar"
+				"type": "date"
 			}
 		],
 		"typeProperties": {
